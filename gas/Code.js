@@ -19,7 +19,6 @@ function doGet(e) {
       var sh = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(CONFIG.SHEET_NAME_WEB);
       var n = sh ? Math.max(sh.getLastRow() - 1, 0) : 0;
       out.leads = n;
-      if (n > 0) { var r = sh.getRange(2, 1, Math.min(n, 3), 4).getValues(); out.recent = r.map(function (x) { return [x[1], x[2], x[3]]; }); }
     }
   } catch (err) { out.error = err.toString(); }
   return ContentService.createTextOutput(JSON.stringify(out)).setMimeType(ContentService.MimeType.JSON);
@@ -41,11 +40,30 @@ function doPost(e) {
       sheet.setColumnWidths(1, COLS, 140);
     }
 
+    if (!e || !e.postData || !e.postData.contents || e.postData.contents.length > 6000) return json({ result: 'error', message: 'bad request' });
     var data = JSON.parse(e.postData.contents);
+
+    /* ── 서버측 봇/남용 방어 ── */
+    if (data.website) return json({ result: 'success' });                       // 허니팟: 봇에게는 성공처럼
+    var ft = Number(data.form_ts || 0), ct = Number(data.client_ts || 0);
+    if (ft && ct && (ct - ft) < 3000) return json({ result: 'error', message: 'too fast' });
+    var cache = CacheService.getScriptCache();
+    var minuteKey = 'rl_' + Math.floor(Date.now() / 60000);
+    var cnt = Number(cache.get(minuteKey) || 0);
+    if (cnt >= 20) return json({ result: 'error', message: 'rate limited' });    // 전역 분당 20건
+    cache.put(minuteKey, String(cnt + 1), 120);
+
     var name = (data.name || '').toString().trim().replace(/<[^>]*>/g, '');
     var phone = (data.phone || '').toString().trim().replace(/[^0-9\-]/g, '');
     if (!name || name.length < 2 || name.length > 20) return json({ result: 'error', message: 'invalid name' });
     if (!/^01[016789]\d{7,8}$/.test(phone.replace(/-/g, ''))) return json({ result: 'error', message: 'invalid phone' });
+    var dupKey = 'dup_' + phone.replace(/-/g, '');
+    if (cache.get(dupKey)) return json({ result: 'success', dup: true });           // 5분 내 동일 번호 중복 무시
+    cache.put(dupKey, '1', 300);
+    if (['south','north','any',''].indexOf(String(data.size || '')) === -1) data.size = '';
+    if (['10-12','12-14','14-16','16-18','other',''].indexOf(String(data.visit_time || '')) === -1) data.visit_time = '';
+    if (data.visit_date && !/^\d{4}-\d{2}-\d{2}$/.test(String(data.visit_date))) data.visit_date = '';
+    ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','page_url'].forEach(function (k) { data[k] = String(data[k] || '').replace(/<[^>]*>/g, '').substring(0, 200); });
 
     var message = (data.message || '').toString().trim().substring(0, 500).replace(/<[^>]*>/g, '');
     var dir = DIR_LABEL[data.size] || (data.size || '').toString().substring(0, 30);

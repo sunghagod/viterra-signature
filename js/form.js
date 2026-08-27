@@ -14,6 +14,7 @@
   /* ── 폼 요소 ─────────────────────────────── */
   var form      = document.getElementById('form');
   if (!form) return;
+  window.__formLoadedAt = Date.now();
 
   var btn       = form.querySelector('.btn-submit');
   var resultEl  = document.getElementById('formResult');
@@ -122,7 +123,10 @@
       utm_campaign: utm.utm_campaign,
       utm_content:  utm.utm_content,
       utm_term:     utm.utm_term,
-      page_url:     window.location.href
+      page_url:     window.location.href,
+      website:      (form.querySelector('[name="website"]') || {}).value || '',
+      form_ts:      window.__formLoadedAt || 0,
+      client_ts:    Date.now()
     };
   }
 

@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+Disallow: /gas/
+Sitemap: https://viterra-signature.com/sitemap.xml
