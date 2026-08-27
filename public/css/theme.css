@@ -242,3 +242,8 @@ body.mobile-mode{overflow-y:auto !important;background:#0E1F17}
 .brand-mark--ko .bm-row .bm-en{font-size:20px;letter-spacing:5px;color:#fff}
 .brand-mark--ko .bm-sep{width:1px;height:16px;background:rgba(232,195,116,.6)}
 .brand-mark--ko .bm-sub{letter-spacing:4px;margin-top:4px}
+
+/* 평면도 카드: 줄바꿈 정리 */
+.sfp2-grid .adv2-c span{white-space:nowrap}
+.sfp2-grid .adv2-c b{white-space:nowrap}
+@media (max-width:400px){.sfp2-grid{grid-template-columns:1fr !important}}
