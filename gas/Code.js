@@ -26,66 +26,67 @@ function doGet(e) {
 
 function doPost(e) {
   try {
-    var ss = SpreadsheetApp.getActiveSpreadsheet();
-    var sheet = ss.getSheetByName(CONFIG.SHEET_NAME_WEB);
-    if (!sheet) {
-      sheet = ss.getSheets()[0];
-      sheet.setName(CONFIG.SHEET_NAME_WEB);
-    }
-    if (sheet.getLastRow() === 0) {
-      sheet.appendRow(['타임스탬프', '이름', '연락처', '관심방향', '방문희망일', '희망시간대', '문의내용',
-                       '유입매체', '캠페인', '광고콘텐츠', '검색어', '페이지URL']);
-      sheet.getRange(1, 1, 1, COLS).setFontWeight('bold');
-      sheet.setFrozenRows(1);
-      sheet.setColumnWidths(1, COLS, 140);
-    }
-
+    /* ── 1. 요청 가드 (Sheets 접근 전) ── */
     if (!e || !e.postData || !e.postData.contents || e.postData.contents.length > 6000) return json({ result: 'error', message: 'bad request' });
-    var data = JSON.parse(e.postData.contents);
-
-    /* ── 서버측 봇/남용 방어 ── */
+    var data;
+    try { data = JSON.parse(e.postData.contents); } catch (pe) { return json({ result: 'error', message: 'bad request' }); }
+    if (!data || typeof data !== 'object') return json({ result: 'error', message: 'bad request' });
     if (data.website) return json({ result: 'success' });                       // 허니팟: 봇에게는 성공처럼
-    var ft = Number(data.form_ts || 0), ct = Number(data.client_ts || 0);
+    var ft = Number(data.form_ts || 0), ct = Number(data.client_ts || 0);       // 클라이언트 타이밍(보조 신호)
     if (ft && ct && (ct - ft) < 3000) return json({ result: 'error', message: 'too fast' });
-    var cache = CacheService.getScriptCache();
-    var minuteKey = 'rl_' + Math.floor(Date.now() / 60000);
-    var cnt = Number(cache.get(minuteKey) || 0);
-    if (cnt >= 20) return json({ result: 'error', message: 'rate limited' });    // 전역 분당 20건
-    cache.put(minuteKey, String(cnt + 1), 120);
 
-    var name = (data.name || '').toString().trim().replace(/<[^>]*>/g, '');
-    var phone = (data.phone || '').toString().trim().replace(/[^0-9\-]/g, '');
+    /* ── 2. 입력 검증 ── */
+    var name = String(data.name || '').trim().replace(/<[^>]*>/g, '');
+    var phone = String(data.phone || '').trim().replace(/[^0-9\-]/g, '');
     if (!name || name.length < 2 || name.length > 20) return json({ result: 'error', message: 'invalid name' });
     if (!/^01[016789]\d{7,8}$/.test(phone.replace(/-/g, ''))) return json({ result: 'error', message: 'invalid phone' });
-    var dupKey = 'dup_' + phone.replace(/-/g, '');
-    if (cache.get(dupKey)) return json({ result: 'success', dup: true });           // 5분 내 동일 번호 중복 무시
-    cache.put(dupKey, '1', 300);
-    if (['south','north','any',''].indexOf(String(data.size || '')) === -1) data.size = '';
-    if (['10-12','12-14','14-16','16-18','other',''].indexOf(String(data.visit_time || '')) === -1) data.visit_time = '';
-    if (data.visit_date && !/^\d{4}-\d{2}-\d{2}$/.test(String(data.visit_date))) data.visit_date = '';
-    ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','page_url'].forEach(function (k) { data[k] = String(data[k] || '').replace(/<[^>]*>/g, '').substring(0, 200); });
-
-    var message = (data.message || '').toString().trim().substring(0, 500).replace(/<[^>]*>/g, '');
-    var dir = DIR_LABEL[data.size] || (data.size || '').toString().substring(0, 30);
-    var vtime = TIME_LABEL[data.visit_time] || (data.visit_time || '').toString().substring(0, 20);
-    var source = data.utm_source || '';
-    var medium = data.utm_medium || '';
+    var message = String(data.message || '').trim().substring(0, 500).replace(/<[^>]*>/g, '');
+    var size = Object.keys(DIR_LABEL).indexOf(String(data.size || '')) === -1 ? '' : String(data.size);
+    var vtimeKey = Object.keys(TIME_LABEL).indexOf(String(data.visit_time || '')) === -1 ? '' : String(data.visit_time);
+    var vdate = /^\d{4}-\d{2}-\d{2}$/.test(String(data.visit_date || '')) ? String(data.visit_date) : '';
+    var clean = function (k) { return String(data[k] || '').replace(/<[^>]*>/g, '').substring(0, 200); };
+    var source = clean('utm_source'), medium = clean('utm_medium');
     var sourceLabel = source ? (source + (medium ? ' / ' + medium : '')) : '직접유입';
+    var dir = DIR_LABEL[size] || '';
+    var vtime = TIME_LABEL[vtimeKey] || '';
 
-    sheet.appendRow([
-      new Date(), name, phone, dir,
-      (data.visit_date || '').toString().trim().substring(0, 20), vtime, message,
-      sourceLabel, data.utm_campaign || '', data.utm_content || '', data.utm_term || '', data.page_url || ''
-    ]);
+    /* ── 3. 남용 방어 (검증 통과 건만 카운트, 원자적) ── */
+    var cache = CacheService.getScriptCache();
+    var dupKey = 'dup_' + phone.replace(/-/g, '');
+    if (cache.get(dupKey)) return json({ result: 'success', dup: true });        // 5분 내 동일 번호 중복 무시
+    var lock = LockService.getScriptLock();
+    if (!lock.tryLock(5000)) return json({ result: 'error', message: 'busy' });
+    try {
+      var minuteKey = 'rl_' + Math.floor(Date.now() / 60000);
+      var cnt = Number(cache.get(minuteKey) || 0);
+      if (cnt >= 30) return json({ result: 'error', message: 'rate limited' });  // 유효 제출 분당 30건
+      cache.put(minuteKey, String(cnt + 1), 120);
 
-    var lastRow = sheet.getLastRow();
-    if (lastRow > 2) sheet.getRange(2, 1, lastRow - 1, COLS).sort({ column: 1, ascending: false });
+      /* ── 4. 시트 기록 ── */
+      var ss = SpreadsheetApp.getActiveSpreadsheet();
+      var sheet = ss.getSheetByName(CONFIG.SHEET_NAME_WEB);
+      if (!sheet) { sheet = ss.getSheets()[0]; sheet.setName(CONFIG.SHEET_NAME_WEB); }
+      if (sheet.getLastRow() === 0) {
+        sheet.appendRow(['타임스탬프', '이름', '연락처', '관심방향', '방문희망일', '희망시간대', '문의내용',
+                         '유입매체', '캠페인', '광고콘텐츠', '검색어', '페이지URL']);
+        sheet.getRange(1, 1, 1, COLS).setFontWeight('bold');
+        sheet.setFrozenRows(1);
+        sheet.setColumnWidths(1, COLS, 140);
+      }
+      sheet.appendRow([new Date(), name, phone, dir, vdate, vtime, message,
+                       sourceLabel, clean('utm_campaign'), clean('utm_content'), clean('utm_term'), clean('page_url')]);
+      cache.put(dupKey, '1', 300);                                              // 기록 성공 후에만 중복키 저장
+      var lastRow = sheet.getLastRow();
+      if (lastRow > 2) sheet.getRange(2, 1, lastRow - 1, COLS).sort({ column: 1, ascending: false });
+    } finally {
+      lock.releaseLock();
+    }
 
-    sendChatNotification({ name: name, phone: phone, dir: dir, visitDate: data.visit_date || '-', visitTime: vtime || '-', message: message || '-', channel: sourceLabel, campaign: data.utm_campaign || '-' });
-
+    sendChatNotification({ name: name, phone: phone, dir: dir, visitDate: vdate || '-', visitTime: vtime || '-', message: message || '-', channel: sourceLabel, campaign: clean('utm_campaign') || '-' });
     return json({ result: 'success' });
   } catch (err) {
-    return json({ result: 'error', message: err.toString() });
+    Logger.log('doPost error: ' + err);
+    return json({ result: 'error', message: 'server error' });
   }
 }
 

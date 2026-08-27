@@ -2,4 +2,6 @@
 
 - 순수 HTML/CSS/JS + GSAP (송암공원 SK VIEW 엔진 기반), 색상/브랜드는 `css/theme.css`
 - 관심고객 폼 → Google Apps Script → Google Sheets (`gas/Code.js`, `clasp push -f && clasp deploy -i <id>`)
-- 로컬: `python -m http.server 8090` → http://localhost:8090
+- 구조: `public/`(배포 대상) · `gas/`(Apps Script, 배포 제외)
+- 로컬: `cd public && python -m http.server 8091`
+- 배포: `npx wrangler pages deploy public --project-name viterra-signature --branch main --commit-dirty=true`

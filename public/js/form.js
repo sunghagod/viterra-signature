@@ -179,18 +179,34 @@
        Apps Script에서 e.postData.contents로 수신       */
     fetch(scriptUrl, {
       method: 'POST',
-      mode:   'no-cors',
+      mode:   'cors',
+      redirect: 'follow',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body:   JSON.stringify(data)
     })
-    .then(function () {
+    .then(function (res) { return res.json(); })
+    .then(function (json) {
       setLoading(false);
-      showResult('success', '예약이 완료되었습니다.\n담당자가 빠르게 연락드리겠습니다.');
-      form.reset();
+      if (json && json.result === 'success') {
+        showResult('success', '예약이 완료되었습니다.\n담당자가 빠르게 연락드리겠습니다.');
+        form.reset();
+        return;
+      }
+      var msg = (json && json.message) || '';
+      var human = {
+        'too fast':      '입력이 너무 빨랐습니다. 잠시 후 다시 시도해주세요.',
+        'rate limited':  '현재 접수가 많습니다. 1분 후 다시 시도해주세요.',
+        'busy':          '잠시 후 다시 시도해주세요.',
+        'invalid name':  '이름을 정확히 입력해주세요.',
+        'invalid phone': '연락처를 정확히 입력해주세요.'
+      }[msg] || '전송에 실패했습니다. 대표번호 1533-3592로 연락해주세요.';
+      showResult('error', human);
     })
     .catch(function () {
       setLoading(false);
-      showResult('error', '전송 중 오류가 발생했습니다.\n잠시 후 다시 시도해주세요.');
+      showResult('error', '전송 중 오류가 발생했습니다.\n대표번호 1533-3592로 연락해주세요.');
     });
+  });
   });
 
   /* ── 개인정보 상세 토글 ───────────────────── */
