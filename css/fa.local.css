@@ -1,0 +1,34 @@
+/* Font Awesome 6 - Minimal (solid only, 29 icons) */
+@font-face{font-family:"Font Awesome 6 Free";font-style:normal;font-weight:900;font-display:block;src:url(webfonts/fa-solid-900.woff2) format("woff2"),url(webfonts/fa-solid-900.ttf) format("truetype")}
+.fa,.fas,.fa-solid{-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;display:var(--fa-display,inline-block);font-style:normal;font-variant:normal;line-height:1;text-rendering:auto}
+.fa,.fas,.fa-solid{font-family:"Font Awesome 6 Free";font-weight:900}
+@keyframes fa-spin{0%{-webkit-transform:rotate(0deg);transform:rotate(0deg)}to{-webkit-transform:rotate(1turn);transform:rotate(1turn)}}
+.fa-spin{-webkit-animation-delay:var(--fa-animation-delay,0s);animation-delay:var(--fa-animation-delay,0s);-webkit-animation-direction:var(--fa-animation-direction,normal);animation-direction:var(--fa-animation-direction,normal)}
+.fa-arrow-right:before{content:"\f061"}
+.fa-award:before{content:"\f559"}
+.fa-book-open:before{content:"\f518"}
+.fa-building:before{content:"\f1ad"}
+.fa-building-circle-check:before{content:"\e4d2"}
+.fa-bullhorn:before{content:"\f0a1"}
+.fa-calendar-check:before{content:"\f274"}
+.fa-chart-line:before,.fa-line-chart:before{content:"\f201"}
+.fa-check-circle:before,.fa-circle-check:before{content:"\f058"}
+.fa-clock-four:before,.fa-clock:before{content:"\f017"}
+.fa-dumbbell:before{content:"\f44b"}
+.fa-file-signature:before{content:"\f573"}
+.fa-graduation-cap:before,.fa-mortar-board:before{content:"\f19d"}
+.fa-home-lg:before,.fa-house-chimney:before{content:"\e3af"}
+.fa-landmark:before{content:"\f66f"}
+.fa-leaf:before{content:"\f06c"}
+.fa-location-dot:before,.fa-map-marker-alt:before{content:"\f3c5"}
+.fa-map-location-dot:before,.fa-map-marked-alt:before{content:"\f5a0"}
+.fa-edit:before,.fa-pen-to-square:before{content:"\f044"}
+.fa-phone:before{content:"\f095"}
+.fa-phone-volume:before,.fa-volume-control-phone:before{content:"\f2a0"}
+.fa-plane-departure:before{content:"\f5b0"}
+.fa-road:before{content:"\f018"}
+.fa-magnifying-glass-plus:before,.fa-search-plus:before{content:"\f00e"}
+.fa-subway:before,.fa-train-subway:before{content:"\f239"}
+.fa-train:before{content:"\f238"}
+.fa-tree:before{content:"\f1bb"}
+.fa-spinner:before{content:"\f110"}

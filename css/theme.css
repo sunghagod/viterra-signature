@@ -1,0 +1,218 @@
+/* ══════════════════════════════════════════════
+   theme.css — 비테라 시그니처 색상/브랜드 오버라이드
+   (style.css 뒤에 로드. 레이아웃은 송암 엔진 그대로)
+   ══════════════════════════════════════════════ */
+@font-face{font-family:'Cormorant Garamond';font-weight:600;font-display:swap;src:url('fonts/CormorantGaramond.ttf') format('truetype')}
+
+:root{
+  --dark:    #15291F;
+  --dark2:   #1F3A2E;
+  --dark3:   #274A3A;
+  --dark4:   #325A47;
+  --gold:    #B98A3E;
+  --gold-lt: #E8C374;
+  --gold-dk: #8F6A2C;
+  --cream:   #FFFFFF;
+  --cream2:  #F3EFE6;
+  --gray:    #A9B3AD;
+  --gray-lt: #CBD3CE;
+}
+
+/* 배경 이미지 교체 */
+.s0-bg{background-image:url('../assets/img/hero.jpg') !important;background-position:center 40% !important}
+.s1-img-inner{background-image:url('../assets/img/exterior.jpg') !important}
+.s5-img{background-image:url('../assets/img/interior-real.jpg') !important}
+
+/* 브랜드 워드마크 (이미지 로고 대체) */
+.brand-mark{display:flex;flex-direction:column;align-items:flex-start;gap:6px;line-height:1}
+.brand-mark .bm-en{font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;letter-spacing:7px;color:#fff}
+.brand-mark .bm-sub{font-family:'Pretendard',sans-serif;font-weight:600;letter-spacing:4.5px;color:rgba(255,255,255,.75);font-size:12px}
+.brand-mark .bm-line{width:150px;height:1px;margin-top:6px;background:linear-gradient(90deg,var(--gold-lt),rgba(232,195,116,0))}
+.hero-brand-logo .brand-mark .bm-en{font-size:clamp(44px,7vw,84px)}
+.hero-brand-logo .brand-mark .bm-sub{font-size:clamp(12px,1.3vw,16px)}
+#header .brand-mark .bm-en{font-size:24px}
+#header .brand-mark .bm-sub{font-size:8px;letter-spacing:3.5px}
+.ft-logo .brand-mark .bm-en{font-size:26px}
+.ft-logo .brand-mark .bm-sub{font-size:9px}
+.mmenu .brand-mark{margin-bottom:24px}
+
+/* 카카오 대신 전화 버튼 */
+.btn-tel{display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,.08);border:1px solid rgba(232,195,116,.55);color:var(--gold-lt);font-weight:700}
+.btn-tel:hover{background:var(--gold);color:#fff;border-color:var(--gold)}
+.float-kakao{display:none !important}
+
+/* 학세권 배지 색 → 입지 카테고리 */
+.sch-badge.sch-tr{background:#2F6B4F}
+.sch-badge.sch-lf{background:#8A6D2E}
+.sch-badge.sch-ed{background:#3F5FA8}
+.sch-badge.sch-na{background:#4C8C5A}
+.sch-badge.sch-md{background:#A8474C}
+.sch-badge.sch-cu{background:#6F5AA8}
+
+/* 시장검증 막대 — 골드 톤 */
+.s2b-bar--school .s2b-bar-fill{background:linear-gradient(180deg,var(--gold-lt),var(--gold)) !important;box-shadow:0 0 30px rgba(232,195,116,.35) !important}
+.s2b-bar-premium{background:var(--gold) !important;color:#fff !important}
+.s2b-bar-premium b{color:#fff !important}
+.s2b-bar--school .s2b-bar-tag{color:var(--gold-lt) !important}
+
+/* 10년전세 비교표: 비테라 값 강조 */
+.zt-nm.zt-hi{color:var(--gold-lt)}
+.zt-vs{color:var(--gray);font-size:.92em}
+.zt-vs b{color:var(--cream);font-weight:600}
+
+/* 헤더/후킹 하드코딩 색 교정 */
+#header.scrolled{background:rgba(21,41,31,.92) !important}
+.hero-hook-main{color:var(--gold-lt) !important}
+/* 모바일 히어로 배경 */
+@media (max-width:768px){
+  .s0-bg{background:#15291F url('../assets/img/hero-m.jpg') center 40% / cover no-repeat !important}
+}
+
+/* 섹션 배경 강제 그린 */
+.sec.s2b,.sec.s4,.sec.s4b,.sec.sfp,.sec.shook,.s2b-panel,.sfp-overlay-panel{background:var(--dark) !important}
+/* 프리미엄 뱃지 골드 */
+.s2b-bar-premium b{background:var(--gold) !important;color:#fff !important;box-shadow:0 6px 18px rgba(185,138,62,.35) !important}
+.s2b-bar-premium::before{border-top-color:var(--gold) !important;border-bottom-color:var(--gold) !important}
+.s2b-bar-premium{color:var(--gold-lt) !important}
+/* 모바일 히어로 배경 (mobile-mode) */
+body.mobile-mode .s0-panel::before{background:#15291F url('../assets/img/hero-m.jpg') center 40% / cover no-repeat !important}
+
+/* 히어로 베일 · 차트 카드 그린 톤 */
+.s0-veil{background:linear-gradient(to right,rgba(21,41,31,.82) 0%,rgba(21,41,31,.5) 55%,rgba(21,41,31,.28) 100%) !important}
+.s2b-chart{background:linear-gradient(145deg,#1c3328 0%,#1F3A2E 50%,#182e24 100%) !important;border-color:rgba(232,195,116,.2) !important}
+.s2b-chart-sub{background:rgba(0,0,0,.18) !important}
+.hero-hook-main, .hero-hook-main *{color:var(--gold-lt) !important;-webkit-text-fill-color:var(--gold-lt) !important;text-shadow:0 0 40px rgba(232,195,116,.35),0 4px 24px rgba(0,0,0,.6) !important}
+
+
+/* ── 자연 스크롤 + 모바일 컬럼 (데스크톱 중앙 배치) ── */
+body.mobile-mode{overflow-y:auto !important;background:#0E1F17}
+#cursor{display:none !important}
+.dots,.ov-progress{display:none !important}
+@media (min-width:700px){
+  #wrap{max-width:640px;margin:0 auto;box-shadow:0 0 0 1px rgba(232,195,116,.12),0 30px 90px rgba(0,0,0,.5)}
+  #header{left:50%;transform:translateX(-50%);max-width:640px;width:100%}
+  .mmenu{inset:0 auto 0 calc(50% - 320px) !important;width:640px}
+  .float-btn{right:auto !important;left:calc(50% + 320px - 106px)}
+  .lightbox-body{max-width:640px}
+}
+
+/* 모바일 메뉴: 닫힘 상태 완전 숨김 (컬럼 모드에서 노출 방지) */
+.mmenu{visibility:hidden;transition:transform .5s cubic-bezier(.76,0,.24,1),visibility 0s .5s}
+.mmenu.open{visibility:visible;transition:transform .5s cubic-bezier(.76,0,.24,1),visibility 0s}
+
+/* 시장검증 차트 컴팩트 */
+.s2b-inner--chart .s2b-bar-wrap{height:170px !important;padding-top:44px !important;gap:14px !important}
+.s2b-inner--chart .s2b-bar{max-width:64px !important}
+.s2b-bar-label{white-space:nowrap;font-size:13px !important;padding:8px 12px !important}
+.s2b-bars{gap:14px !important}
+.s2b-chart-sub{font-size:14px !important;line-height:1.6 !important;padding:14px 12px !important}
+.s2b-chart-sub em,.s2b-chart-sub strong{white-space:nowrap}
+.s2b-bar-tag{white-space:nowrap}
+/* 애프터리빙 카드 단독 */
+.shook-cards{grid-template-columns:1fr !important;max-width:520px;margin-left:auto;margin-right:auto}
+
+/* 시장검증: 비교 리스트 */
+.pm-list{margin-top:18px;border:1px solid rgba(232,195,116,.25);border-radius:8px;overflow:hidden}
+.pm-head,.pm-row{display:grid;grid-template-columns:1.4fr .95fr .95fr 1fr;align-items:center;gap:6px;padding:12px 12px;text-align:center}
+.pm-row span{white-space:nowrap;font-size:13.5px}
+.pm-head{background:rgba(232,195,116,.12);font-size:12px;font-weight:700;color:var(--gold-lt);letter-spacing:.5px}
+.pm-row{border-top:1px solid rgba(255,255,255,.08);font-size:14px}
+.pm-row b{text-align:left;font-weight:700;color:#fff;font-size:14px;line-height:1.25}
+.pm-row b small{display:block;font-weight:400;font-size:11px;color:rgba(255,255,255,.55);margin-top:3px}
+.pm-row span{color:rgba(255,255,255,.7)}
+.pm-row .pm-now{color:#fff;font-weight:700}
+.pm-row em{font-style:normal;font-weight:800;color:var(--gold-lt);font-size:14px;background:rgba(185,138,62,.18);border-radius:4px;padding:8px 2px;white-space:nowrap}
+@media (max-width:480px){
+  .pm-head{display:none}
+  .pm-row{grid-template-columns:1fr auto;grid-template-areas:"nm em" "vals em";row-gap:6px;padding:14px 14px}
+  .pm-row b{grid-area:nm}
+  .pm-row em{grid-area:em;padding:8px 10px;font-size:16px}
+  .pm-row > span{grid-area:vals;display:inline;text-align:left;font-size:13px}
+  .pm-row > span:nth-of-type(1)::before{content:"최초 "}
+  .pm-row > span:nth-of-type(1)::after{content:" → "}
+  .pm-row > span.pm-now::before{content:"실거래 "}
+}
+
+/* 히어로 CTA: 한양립스식 버튼 */
+.s0 .btn-hy{padding:14px 26px !important;font-size:15px !important;font-weight:700 !important;letter-spacing:.02em !important;border-radius:4px !important;background:rgba(232,195,116,.16) !important;color:#fff !important;border:2px solid rgba(232,195,116,.55) !important;box-shadow:none !important;gap:8px !important}
+.s0 .btn-hy:hover{background:var(--gold) !important;border-color:var(--gold) !important;color:#fff !important}
+.s0 .btn-hy::before,.s0 .btn-hy::after{display:none !important}
+
+/* 관심고객 폼: 글자 키움 */
+.fg label{font-size:16px !important;font-weight:700 !important;margin-bottom:10px !important;color:#fff !important}
+.fg input,.fg select,.fg textarea{font-size:18px !important;padding:14px 4px !important;color:#fff !important}
+.fg input::placeholder,.fg textarea::placeholder{color:rgba(255,255,255,.4) !important;font-size:17px}
+.fg select{font-size:18px !important}
+.fg-chk label{font-size:16px !important}
+.privacy-toggle{font-size:14px !important;color:rgba(255,255,255,.7) !important}
+.s5-fdesc{font-size:16px !important;color:rgba(255,255,255,.8) !important}
+.btn-submit{font-size:18px !important;padding:20px !important}
+/* 푸터 제작문의 */
+.ft-contact{display:block;margin-top:8px;font-size:13px;color:var(--gold-lt)}
+
+/* ── 히어로 지표: 숫자+단위 가로 정렬 ── */
+.hero-stats--hook{display:grid !important;grid-template-columns:repeat(3,1fr) !important;gap:14px 10px !important;border:0 !important}
+.hero-stats--hook .hstat{display:block !important;text-align:left !important;padding:12px 14px !important;border:1px solid rgba(255,255,255,.14) !important;border-radius:6px !important;background:rgba(0,0,0,.28) !important;backdrop-filter:blur(4px)}
+.hero-stats--hook .hstat b{display:inline !important;font-size:30px !important;font-weight:800 !important;line-height:1 !important;color:#fff !important;letter-spacing:-.5px}
+.hero-stats--hook .hstat span{display:inline !important;font-size:15px !important;font-weight:700 !important;color:var(--gold-lt) !important;margin-left:4px !important;line-height:1 !important}
+.hero-stats--hook .hstat p{display:block !important;margin-top:6px !important;font-size:12.5px !important;color:rgba(255,255,255,.75) !important;white-space:nowrap}
+@media (max-width:420px){.hero-stats--hook{grid-template-columns:repeat(2,1fr) !important}.hero-stats--hook .hstat b{font-size:26px !important}}
+
+/* ── 브랜드 카드: 아이콘 좌 · 텍스트 우 ── */
+.s1-card{display:grid !important;grid-template-columns:44px 1fr !important;column-gap:14px !important;align-items:center !important;padding:18px 18px !important}
+.s1-card .s1-card-icon{grid-row:1/3 !important;margin:0 !important;width:44px !important;height:44px !important}
+.s1-card h4{margin:0 0 4px !important;font-size:16px !important}
+.s1-card p{margin:0 !important;font-size:13.5px !important;line-height:1.5 !important;color:rgba(255,255,255,.75) !important}
+
+/* ── 브랜드 카운터: Pretendard 굵게 ── */
+.stats .stat-num .cnt{font-family:var(--ff-ko) !important;font-size:28px !important;font-weight:800 !important;color:#fff !important;letter-spacing:-.5px !important}
+.stats .stat-unit{font-family:var(--ff-ko) !important;font-size:14px !important;font-weight:700 !important;color:var(--gold-lt) !important;margin-left:3px !important}
+.stats .stat p{font-size:13px !important;color:rgba(255,255,255,.75) !important;margin-top:6px !important;white-space:nowrap}
+.stats .stat{padding:14px 4px !important}
+
+/* ── 관심고객 섹션: 전부 Pretendard ── */
+.s5 *:not(.bm-en):not(.fa-solid):not(.fa){font-family:var(--ff-ko) !important}
+.s5 .label{font-size:13px !important;letter-spacing:3px !important;font-weight:700 !important}
+
+/* 히어로 지표: 숫자+단위 묶음 (마크업 기반) */
+.hero-stats--hook .hstat .hn{display:flex !important;flex-direction:row !important;align-items:baseline !important;gap:5px !important;width:auto !important}
+.hero-stats--hook .hstat .hn b{display:inline-block !important;margin:0 !important}
+.hero-stats--hook .hstat .hn span{display:inline-block !important;margin:0 !important;transform:none !important}
+.hero-stats--hook{grid-template-columns:repeat(2,1fr) !important;gap:10px !important}
+.hero-stats--hook .hstat{padding:14px 16px !important}
+.hero-stats--hook .hstat b{font-size:32px !important}
+.hero-stats--hook .hstat span{font-size:16px !important}
+.hero-stats--hook .hstat p{font-size:13px !important}
+@media (min-width:600px){.hero-stats--hook{grid-template-columns:repeat(3,1fr) !important}}
+
+.hero-stats--hook .hstat .hn span{white-space:nowrap !important;flex:none !important}
+.hero-stats--hook .hstat .hn b{flex:none !important;white-space:nowrap !important}
+.hero-stats--hook .hstat{min-width:0 !important}
+
+.hero-stats--hook{justify-items:stretch !important;width:100% !important;max-width:none !important}
+.hero-stats--hook .hstat{width:100% !important;max-width:none !important;justify-self:stretch !important;box-sizing:border-box}
+
+/* ── 일반분양 vs 10년전세: 대비표 ── */
+.cmp2{margin-top:16px;border:1px solid rgba(232,195,116,.28);border-radius:8px;overflow:hidden}
+.cmp2-head,.cmp2-row{display:grid;grid-template-columns:56px 1fr 1.25fr;align-items:stretch}
+.cmp2-head span{padding:11px 8px;text-align:center;font-size:13px;font-weight:700;color:rgba(255,255,255,.6);background:rgba(255,255,255,.05)}
+.cmp2-head span.hi{background:var(--gold);color:#fff}
+.cmp2-row{border-top:1px solid rgba(255,255,255,.08)}
+.cmp2-row span{padding:14px 8px;text-align:center;display:flex;flex-direction:column;justify-content:center;gap:3px}
+.cmp2-row .k{font-size:14px;font-weight:700;color:var(--gold-lt);background:rgba(255,255,255,.04)}
+.cmp2-row b{font-size:18px;font-weight:800;line-height:1.2;letter-spacing:-.3px}
+.cmp2-row small{font-size:11.5px;line-height:1.35}
+.cmp2-row .a b{color:rgba(255,255,255,.55);text-decoration:line-through;text-decoration-color:rgba(255,255,255,.35)}
+.cmp2-row .a small{color:rgba(255,255,255,.4)}
+.cmp2-row .b{background:rgba(185,138,62,.14);border-left:1px solid rgba(232,195,116,.25)}
+.cmp2-row .b b{color:var(--gold-lt);font-size:20px}
+.cmp2-row .b small{color:rgba(255,255,255,.8)}
+
+/* ── 8대 장점: 번호 카드 ── */
+.adv2{margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.adv2-c{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:16px 14px 14px;display:flex;flex-direction:column;gap:4px}
+.adv2-c i{font-style:normal;font-size:12px;font-weight:800;color:var(--gold-lt);letter-spacing:1px}
+.adv2-c b{font-size:16px;font-weight:800;color:#fff;line-height:1.3;letter-spacing:-.3px}
+.adv2-c span{font-size:13px;color:rgba(255,255,255,.7);line-height:1.4}
+.s4-zone-head h3 .zone-name{font-size:20px !important}
+.s4-zone-head p{font-size:14px !important;color:rgba(255,255,255,.75) !important}
