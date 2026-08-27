@@ -2,7 +2,7 @@
    theme.css — 비테라 시그니처 색상/브랜드 오버라이드
    (style.css 뒤에 로드. 레이아웃은 송암 엔진 그대로)
    ══════════════════════════════════════════════ */
-@font-face{font-family:'Cormorant Garamond';font-weight:600;font-display:swap;src:url('fonts/CormorantGaramond.ttf') format('truetype')}
+@font-face{font-family:'Cormorant Garamond';font-weight:600;font-display:swap;src:url('fonts/CormorantGaramond-sub.woff2') format('woff2')}
 
 :root{
   --dark:    #15291F;
