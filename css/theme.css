@@ -236,3 +236,9 @@ body.mobile-mode{overflow-y:auto !important;background:#0E1F17}
 .sfp2-img img{width:100%;height:auto;max-height:none !important;object-fit:contain !important}
 .sfp2-img .s2b-map-zoom{position:absolute;right:12px;bottom:12px}
 .sfp2-grid{margin-top:14px}
+
+/* 헤더: 비테라 | VITERRA 병기 */
+.brand-mark--ko .bm-row{display:flex;align-items:center;gap:10px;line-height:1}
+.brand-mark--ko .bm-row .bm-en{font-size:20px;letter-spacing:5px;color:#fff}
+.brand-mark--ko .bm-sep{width:1px;height:16px;background:rgba(232,195,116,.6)}
+.brand-mark--ko .bm-sub{letter-spacing:4px;margin-top:4px}
