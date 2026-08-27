@@ -117,3 +117,17 @@ function authorizeAndTest() {
     message: '연동 테스트 (삭제해도 됨)', utm_source: 'test', utm_medium: 'manual', page_url: 'https://viterra.test/' }) } };
   Logger.log(doPost(mock).getContent());
 }
+
+/* 테스트 행 정리: 테스트 번호/이름/유입경로 패턴 삭제 */
+function cleanupTestRows() {
+  var sh = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(CONFIG.SHEET_NAME_WEB);
+  if (!sh || sh.getLastRow() < 2) return 0;
+  var vals = sh.getRange(2, 1, sh.getLastRow() - 1, COLS).getValues();
+  var isTest = function (r) {
+    var name = String(r[1] || ''), phone = String(r[2] || ''), src = String(r[7] || ''), msg = String(r[6] || '');
+    return /^010-(9999|1234|2222|5555)-/.test(phone) || /테스트|폼테스트|curl|bot|fast|빠름|CSP|리뷰|보안|E2E/i.test(name) || /^(curl|test|playwright|review|csp-test|sectest)/i.test(src) || /테스트/.test(msg);
+  };
+  var removed = 0;
+  for (var i = vals.length - 1; i >= 0; i--) { if (isTest(vals[i])) { sh.deleteRow(i + 2); removed++; } }
+  return removed;
+}
