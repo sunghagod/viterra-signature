@@ -236,18 +236,20 @@ body.mobile-mode{overflow-y:auto !important;background:#0E1F17}
 .sfp2-grid .adv2-c b{white-space:nowrap}
 @media (max-width:400px){.sfp2-grid{grid-template-columns:1fr !important}}
 
-/* ── 시장검증 리스트 v2 (라벨 HTML) ── */
+/* ── 시장검증 리스트 v3 ── */
+.pm-vals{display:contents}
 .pm-row .pm-arrow{display:none}
 .pm-row small{display:none}
 @media (max-width:560px){
   .pm-head{display:none}
-  .pm-row{display:flex !important;flex-wrap:wrap;align-items:center;gap:6px 8px;padding:14px 14px !important;text-align:left !important}
-  .pm-row b{flex:0 0 100%;text-align:left}
+  .pm-row{display:grid !important;grid-template-columns:1fr auto !important;grid-template-areas:"nm em" "vals vals" !important;align-items:center;column-gap:10px;row-gap:10px;padding:14px 14px !important;text-align:left !important}
+  .pm-row b{grid-area:nm;text-align:left}
+  .pm-row em{grid-area:em;align-self:start;margin:0 !important;padding:8px 12px !important;font-size:15px !important}
+  .pm-vals{display:flex;grid-area:vals;align-items:center;gap:8px;flex-wrap:wrap}
   .pm-row .pm-arrow{display:inline;color:var(--gold-lt)}
   .pm-row small{display:inline;color:rgba(255,255,255,.55);margin-right:4px;font-weight:500}
-  .pm-row > span{display:inline;font-size:13.5px !important;color:rgba(255,255,255,.85) !important;white-space:nowrap}
-  .pm-row > span.pm-now{font-weight:800 !important;color:#fff !important}
-  .pm-row em{margin-left:auto;padding:8px 12px !important;font-size:15px !important}
+  .pm-vals > span{display:inline;font-size:13.5px !important;color:rgba(255,255,255,.85) !important;white-space:nowrap}
+  .pm-vals > span.pm-now{font-weight:800 !important;color:#fff !important}
 }
 /* ── 헤더 워드마크 베이스라인 ── */
 .brand-mark--ko .bm-row{align-items:baseline !important}
