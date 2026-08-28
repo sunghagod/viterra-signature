@@ -9,7 +9,7 @@ var CONFIG = {
 };
 var COLS = 12;
 
-var DIR_LABEL = { south: '남향 (리버뷰)', north: '북향 (시티·마운틴뷰)', any: '상관없음' };
+var DIR_LABEL = { river: '리버뷰 (광주천)', mountain: '무등산뷰', any: '상관없음', south: '남향(구)', north: '북향(구)' };
 var TIME_LABEL = { '10-12': '오전 10~12시', '12-14': '낮 12~14시', '14-16': '오후 14~16시', '16-18': '늦은 오후 16~18시', other: '기타' };
 
 function doGet(e) {
@@ -67,7 +67,7 @@ function doPost(e) {
       var sheet = ss.getSheetByName(CONFIG.SHEET_NAME_WEB);
       if (!sheet) { sheet = ss.getSheets()[0]; sheet.setName(CONFIG.SHEET_NAME_WEB); }
       if (sheet.getLastRow() === 0) {
-        sheet.appendRow(['타임스탬프', '이름', '연락처', '관심방향', '방문희망일', '희망시간대', '문의내용',
+        sheet.appendRow(['타임스탬프', '이름', '연락처', '관심뷰', '방문희망일', '희망시간대', '문의내용',
                          '유입매체', '캠페인', '광고콘텐츠', '검색어', '페이지URL']);
         sheet.getRange(1, 1, 1, COLS).setFontWeight('bold');
         sheet.setFrozenRows(1);

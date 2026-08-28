@@ -100,7 +100,7 @@
     }
 
     // select 값 화이트리스트 검증
-    var allowedSizes = ['', 'south', 'north', 'any'];
+    var allowedSizes = ['', 'river', 'mountain', 'any'];
     if (allowedSizes.indexOf(sizeVal) === -1) sizeVal = '';
 
     var allowedTimes = ['', '10-12', '12-14', '14-16', '16-18', 'other'];
