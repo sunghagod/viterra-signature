@@ -219,18 +219,6 @@ body.mobile-mode{overflow-y:auto !important;background:#0E1F17}
 }
 .s1-card p br{display:none}
 
-/* ── 시장검증 리스트: 모바일 스택 (flex-wrap) ── */
-@media (max-width:560px){
-  .pm-head{display:none}
-  .pm-row{display:flex !important;flex-wrap:wrap;align-items:center;gap:6px 8px;padding:14px 14px !important;text-align:left !important}
-  .pm-row b{flex:0 0 100%;text-align:left}
-  .pm-row > span{display:inline;font-size:13.5px !important;color:rgba(255,255,255,.85) !important;white-space:nowrap}
-  .pm-row > span:nth-of-type(1)::before{content:"최초 ";color:rgba(255,255,255,.55)}
-  .pm-row > span:nth-of-type(1)::after{content:" →";color:var(--gold-lt);margin-left:4px}
-  .pm-row > span.pm-now::before{content:"실거래 ";color:rgba(255,255,255,.55)}
-  .pm-row > span.pm-now{font-weight:800 !important;color:#fff !important}
-  .pm-row em{margin-left:auto;padding:8px 12px !important;font-size:15px !important}
-}
 /* ── 평면도 섹션 ── */
 .sfp2-img{position:relative;cursor:pointer;background:#3a3532;border-radius:8px;overflow:hidden}
 .sfp2-img img{width:100%;height:auto;max-height:none !important;object-fit:contain !important}
@@ -247,3 +235,30 @@ body.mobile-mode{overflow-y:auto !important;background:#0E1F17}
 .sfp2-grid .adv2-c span{white-space:nowrap}
 .sfp2-grid .adv2-c b{white-space:nowrap}
 @media (max-width:400px){.sfp2-grid{grid-template-columns:1fr !important}}
+
+/* ── 시장검증 리스트 v2 (라벨 HTML) ── */
+.pm-row .pm-arrow{display:none}
+.pm-row small{display:none}
+@media (max-width:560px){
+  .pm-head{display:none}
+  .pm-row{display:flex !important;flex-wrap:wrap;align-items:center;gap:6px 8px;padding:14px 14px !important;text-align:left !important}
+  .pm-row b{flex:0 0 100%;text-align:left}
+  .pm-row .pm-arrow{display:inline;color:var(--gold-lt)}
+  .pm-row small{display:inline;color:rgba(255,255,255,.55);margin-right:4px;font-weight:500}
+  .pm-row > span{display:inline;font-size:13.5px !important;color:rgba(255,255,255,.85) !important;white-space:nowrap}
+  .pm-row > span.pm-now{font-weight:800 !important;color:#fff !important}
+  .pm-row em{margin-left:auto;padding:8px 12px !important;font-size:15px !important}
+}
+/* ── 헤더 워드마크 베이스라인 ── */
+.brand-mark--ko .bm-row{align-items:baseline !important}
+.brand-mark--ko .bm-row .bm-en{line-height:1;position:relative;top:1px}
+.brand-mark--ko .bm-sep{align-self:center}
+/* ── 브랜드 카운터: 모바일 3+2 ── */
+@media (max-width:600px){
+  .stats{display:grid !important;grid-template-columns:repeat(6,1fr) !important;gap:0 !important}
+  .stats hr{display:none !important}
+  .stats .stat{border:0 !important;border-right:1px solid rgba(255,255,255,.12) !important;border-bottom:1px solid rgba(255,255,255,.12) !important;padding:16px 4px !important}
+  .stats .stat:nth-of-type(1),.stats .stat:nth-of-type(2),.stats .stat:nth-of-type(3){grid-column:span 2}
+  .stats .stat:nth-of-type(4),.stats .stat:nth-of-type(5){grid-column:span 3;border-bottom:0 !important}
+  .stats .stat:nth-of-type(3),.stats .stat:nth-of-type(5){border-right:0 !important}
+}
